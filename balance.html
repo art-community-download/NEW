@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balance & History | Part-Time Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- PREMIUM CSS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; min-height: 100vh; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientBG 15s ease infinite; padding: 20px; color: white; }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
+
+        /* Header */
+        .header-top { display: flex; align-items: center; margin-bottom: 25px; }
+        .back-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 14px; border-radius: 12px; cursor: pointer; margin-right: 15px; transition: 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.4); }
+        h2 { font-size: 22px; font-weight: 600; }
+
+        /* WALLET CARD DESIGN */
+        .wallet-card {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); /* Premium Dark Gradient */
+            border-radius: 20px; padding: 25px; position: relative; overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3); margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1); animation: slideDown 0.8s;
+        }
+        /* Decorative Circles on Card */
+        .wallet-card::before {
+            content: ''; position: absolute; top: -50px; right: -50px; width: 150px; height: 150px;
+            background: rgba(255,255,255,0.1); border-radius: 50%;
+        }
+        .wallet-card::after {
+            content: ''; position: absolute; bottom: -50px; left: -20px; width: 100px; height: 100px;
+            background: rgba(255,255,255,0.05); border-radius: 50%;
+        }
+
+        .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .chip-icon { font-size: 30px; color: #ffd700; opacity: 0.8; }
+        .brand-name { font-size: 14px; font-weight: 600; letter-spacing: 2px; opacity: 0.7; }
+
+        .balance-area { text-align: left; z-index: 2; position: relative; }
+        .bal-label { font-size: 12px; opacity: 0.8; text-transform: uppercase; }
+        .bal-amount { font-size: 36px; font-weight: bold; margin: 5px 0; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
+        
+        .card-bottom { margin-top: 20px; display: flex; justify-content: space-between; font-size: 12px; opacity: 0.9; }
+        .card-uid { letter-spacing: 2px; font-family: monospace; font-size: 14px; }
+
+        /* HISTORY SECTION */
+        .section-title { font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
+        .history-container {
+            max-height: 400px; overflow-y: auto; padding-right: 5px; /* Scrollable */
+        }
+        
+        /* Custom Scrollbar */
+        .history-container::-webkit-scrollbar { width: 5px; }
+        .history-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+
+        .trans-item {
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+            padding: 15px; border-radius: 15px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            border-left: 4px solid #ccc; transition: 0.3s; animation: fadeIn 0.5s;
+        }
+        .trans-item:hover { transform: translateX(5px); background: rgba(255,255,255,0.15); }
+
+        .t-left { display: flex; align-items: center; gap: 15px; }
+        .t-icon {
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.1);
+            display: flex; justify-content: center; align-items: center; font-size: 18px;
+        }
+        .t-details h4 { font-size: 14px; margin-bottom: 3px; }
+        .t-details p { font-size: 10px; opacity: 0.6; }
+
+        .t-right { text-align: right; }
+        .t-amount { font-size: 16px; font-weight: bold; }
+        .t-status { font-size: 10px; font-weight: bold; padding: 3px 8px; border-radius: 5px; margin-top: 5px; display: inline-block; }
+
+        /* Status Colors */
+        .s-pending { color: #ffd700; border-color: #ffd700; background: rgba(255, 215, 0, 0.1); }
+        .s-success { color: #38ef7d; border-color: #38ef7d; background: rgba(56, 239, 125, 0.1); }
+        .s-rejected { color: #ff416c; border-color: #ff416c; background: rgba(255, 65, 108, 0.1); }
+
+        /* ABOUT SECTION */
+        .about-card {
+            background: rgba(0,0,0,0.2); padding: 20px; border-radius: 15px;
+            margin-top: 30px; font-size: 13px; line-height: 1.6; opacity: 0.9;
+            border: 1px dashed rgba(255,255,255,0.3);
+        }
+
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header-top">
+            <button class="back-btn" onclick="window.location.href='home.html'"><i class="fas fa-arrow-left"></i></button>
+            <h2>My Balance</h2>
+        </div>
+
+        <!-- Premium Wallet Card -->
+        <div class="wallet-card">
+            <div class="card-top">
+                <i class="fas fa-sim-card chip-icon"></i>
+                <span class="brand-name">PART-TIME WALLET</span>
+            </div>
+            
+            <div class="balance-area">
+                <div class="bal-label">Available Balance</div>
+                <div class="bal-amount">৳ <span id="currBal">0.00</span></div>
+            </div>
+
+            <div class="card-bottom">
+                <div>UID: <span id="uID" class="card-uid">....</span></div>
+                <div>User</div>
+            </div>
+        </div>
+
+        <!-- Withdrawal History -->
+        <div class="section-title">
+            <i class="fas fa-history"></i> Withdrawal History
+        </div>
+
+        <div id="history-list" class="history-container">
+            <p style="text-align:center; opacity:0.5; margin-top:30px;">Loading transactions...</p>
+        </div>
+
+        <!-- About Balance Section -->
+        <div class="about-card">
+            <h4><i class="fas fa-info-circle"></i> About Balance</h4>
+            <p style="margin-top:10px; opacity:0.8;">
+                This is your digital wallet. Your earnings from referrals and tasks are added here instantly. 
+                <br><br>
+                • <b>Withdraw:</b> You can withdraw money once you reach the minimum limit.
+                <br>
+                • <b>Pending:</b> Pending withdrawals are processed within 24 hours.
+                <br>
+                • <b>Security:</b> All transactions are secured and monitored by Admin.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Firebase Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDWu8H9uOVkHRXMbR4FFrzedZOh2wBkdJ0",
+            authDomain: "art2-245f8.firebaseapp.com",
+            databaseURL: "https://art2-245f8-default-rtdb.firebaseio.com",
+            projectId: "art2-245f8",
+            storageBucket: "art2-245f8.firebasestorage.app",
+            messagingSenderId: "963842145655",
+            appId: "1:963842145655:web:e7843407bec8528c67b572"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const uid = localStorage.getItem('currentUid');
+
+        if(!uid) window.location.href = 'login_register.html';
+
+        // --- FETCH USER DATA ---
+        const userRef = ref(db, 'users/' + uid);
+        onValue(userRef, (snapshot) => {
+            const user = snapshot.val();
+            if(!user) return;
+
+            // 1. Update Card Info
+            document.getElementById('currBal').innerText = parseFloat(user.balance || 0).toFixed(2);
+            document.getElementById('uID').innerText = user.uid;
+
+            // 2. Render Full History
+            renderFullHistory(user.withdraws);
+        });
+
+        function renderFullHistory(withdrawsObj) {
+            const list = document.getElementById('history-list');
+            list.innerHTML = "";
+
+            if(!withdrawsObj) {
+                list.innerHTML = `
+                    <div style="text-align:center; padding:30px; opacity:0.5;">
+                        <i class="fas fa-file-invoice-dollar" style="font-size:40px; margin-bottom:10px;"></i>
+                        <p>No transaction history found.</p>
+                    </div>`;
+                return;
+            }
+
+            // Convert object to array and reverse (Newest first)
+            const historyArr = Object.values(withdrawsObj).reverse();
+
+            historyArr.forEach(w => {
+                let icon = 'fa-hourglass-half'; // Pending default
+                let statusClass = 's-pending';
+                let borderColor = '#ffd700';
+                
+                if(w.status === 'success') {
+                    icon = 'fa-check';
+                    statusClass = 's-success';
+                    borderColor = '#38ef7d';
+                }
+                if(w.status === 'rejected') {
+                    icon = 'fa-times';
+                    statusClass = 's-rejected';
+                    borderColor = '#ff416c';
+                }
+
+                list.innerHTML += `
+                    <div class="trans-item" style="border-left-color: ${borderColor}">
+                        <div class="t-left">
+                            <div class="t-icon">
+                                <i class="fas ${icon}" style="color: ${borderColor}"></i>
+                            </div>
+                            <div class="t-details">
+                                <h4>Withdraw (${w.method})</h4>
+                                <p>${w.date}</p>
+                                <p>${w.number}</p>
+                            </div>
+                        </div>
+                        <div class="t-right">
+                            <div class="t-amount">-${w.amount}</div>
+                            <div class="t-status ${statusClass}">${w.status.toUpperCase()}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+    </script>
+</body>
+</html>
