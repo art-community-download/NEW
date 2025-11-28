@@ -5,155 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login & Register | Part-Time Job</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* --- PREMIUM CSS (Glass Theme) --- */
+        /* --- SAME CSS AS BEFORE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-            padding: 20px;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            width: 100%;
-            max-width: 400px;
-            padding: 30px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        h2 {
-            color: white;
-            text-align: center;
-            margin-bottom: 20px;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        /* Input Groups */
-        .input-group {
-            position: relative;
-            margin-bottom: 15px;
-        }
-        
-        /* Left Icon (Lock, User, Phone) */
-        .input-group .left-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255,255,255,0.8);
-            z-index: 10;
-        }
-
-        /* Right Icon (Eye Toggle) */
-        .input-group .toggle-pass {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255,255,255,0.8);
-            cursor: pointer;
-            z-index: 10;
-            transition: 0.3s;
-        }
-        .input-group .toggle-pass:hover {
-            color: white;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px 40px 12px 45px; /* Right padding increased for eye icon */
-            background: rgba(255,255,255,0.15);
-            border: none;
-            border-radius: 30px;
-            color: white;
-            font-size: 14px;
-            outline: none;
-            transition: 0.3s;
-        }
+        body { font-family: 'Poppins', sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientBG 10s ease infinite; padding: 20px; }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        .container { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); width: 100%; max-width: 400px; padding: 30px; overflow: hidden; position: relative; }
+        h2 { color: white; text-align: center; margin-bottom: 20px; font-weight: 600; letter-spacing: 1px; }
+        .input-group { position: relative; margin-bottom: 15px; }
+        .input-group .left-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.8); z-index: 10; }
+        .input-group .toggle-pass { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: rgba(255,255,255,0.8); cursor: pointer; z-index: 10; transition: 0.3s; }
+        .input-group .toggle-pass:hover { color: white; }
+        input { width: 100%; padding: 12px 40px 12px 45px; background: rgba(255,255,255,0.15); border: none; border-radius: 30px; color: white; font-size: 14px; outline: none; transition: 0.3s; }
         input::placeholder { color: rgba(255,255,255,0.6); }
-        input:focus {
-            background: rgba(255,255,255,0.25);
-            box-shadow: 0 0 10px rgba(255,255,255,0.2);
-        }
-
-        /* Buttons */
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            border-radius: 30px;
-            background: linear-gradient(to right, #00c6ff, #0072ff);
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
-        }
-        .btn-submit:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 114, 255, 0.6);
-        }
-
-        /* Toggle Link */
-        .switch-text {
-            text-align: center;
-            margin-top: 15px;
-            color: rgba(255,255,255,0.8);
-            font-size: 13px;
-        }
-        .switch-text b {
-            color: #fff;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-
-        /* Hidden/Show Classes */
+        input:focus { background: rgba(255,255,255,0.25); box-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .btn-submit { width: 100%; padding: 12px; border: none; border-radius: 30px; background: linear-gradient(to right, #00c6ff, #0072ff); color: white; font-weight: 600; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.3s; box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4); }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 114, 255, 0.6); }
+        .switch-text { text-align: center; margin-top: 15px; color: rgba(255,255,255,0.8); font-size: 13px; }
+        .switch-text b { color: #fff; cursor: pointer; text-decoration: underline; }
         .form-box { transition: opacity 0.4s ease, transform 0.4s ease; }
         .hidden { display: none; opacity: 0; transform: translateX(50px); }
         .active { display: block; opacity: 1; transform: translateX(0); animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-
-        /* Custom Toast */
-        .toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 5px;
-            padding: 16px;
-            position: fixed;
-            z-index: 100;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 15px;
-        }
+        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 5px; padding: 16px; position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 15px; }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
@@ -162,173 +38,159 @@
 <body>
 
     <div class="container">
-        
         <!-- LOGIN FORM -->
         <div id="login-box" class="form-box active">
             <h2>Welcome Back</h2>
-            <div class="input-group">
-                <i class="fas fa-phone left-icon"></i>
-                <input type="number" id="l_phone" placeholder="Phone Number">
-            </div>
-            
-            <!-- Login Password with Eye Icon -->
-            <div class="input-group">
-                <i class="fas fa-lock left-icon"></i>
-                <input type="password" id="l_pass" placeholder="Password">
-                <i class="fas fa-eye toggle-pass" onclick="togglePassword('l_pass', this)"></i>
-            </div>
-            
-            <button class="btn-submit" onclick="handleLogin()">LOGIN</button>
+            <div class="input-group"><i class="fas fa-phone left-icon"></i><input type="number" id="l_phone" placeholder="Phone Number"></div>
+            <div class="input-group"><i class="fas fa-lock left-icon"></i><input type="password" id="l_pass" placeholder="Password"><i class="fas fa-eye toggle-pass" onclick="togglePassword('l_pass', this)"></i></div>
+            <button class="btn-submit" id="btnLogin">LOGIN</button>
             <p class="switch-text">Don't have an account? <b onclick="toggleForm('register')">Register Now</b></p>
         </div>
 
         <!-- REGISTER FORM -->
         <div id="register-box" class="form-box hidden">
             <h2>Create Account</h2>
-            <div class="input-group">
-                <i class="fas fa-user left-icon"></i>
-                <input type="text" id="r_fname" placeholder="First Name">
-            </div>
-            <div class="input-group">
-                <i class="fas fa-user left-icon"></i>
-                <input type="text" id="r_lname" placeholder="Last Name">
-            </div>
-            <div class="input-group">
-                <i class="fas fa-phone left-icon"></i>
-                <input type="number" id="r_phone" placeholder="Phone Number">
-            </div>
-            
-            <!-- Register Password with Eye Icon -->
-            <div class="input-group">
-                <i class="fas fa-lock left-icon"></i>
-                <input type="password" id="r_pass" placeholder="Password">
-                <i class="fas fa-eye toggle-pass" onclick="togglePassword('r_pass', this)"></i>
-            </div>
-
-            <!-- Confirm Password with Eye Icon -->
-            <div class="input-group">
-                <i class="fas fa-key left-icon"></i>
-                <input type="password" id="r_cpass" placeholder="Confirm Password">
-                <i class="fas fa-eye toggle-pass" onclick="togglePassword('r_cpass', this)"></i>
-            </div>
-
-            <div class="input-group">
-                <i class="fas fa-share-alt left-icon"></i>
-                <input type="text" id="r_ref" placeholder="Referral Code (Required)">
-            </div>
-            <button class="btn-submit" onclick="handleRegister()">REGISTER</button>
+            <div class="input-group"><i class="fas fa-user left-icon"></i><input type="text" id="r_fname" placeholder="First Name"></div>
+            <div class="input-group"><i class="fas fa-user left-icon"></i><input type="text" id="r_lname" placeholder="Last Name"></div>
+            <div class="input-group"><i class="fas fa-phone left-icon"></i><input type="number" id="r_phone" placeholder="Phone Number"></div>
+            <div class="input-group"><i class="fas fa-lock left-icon"></i><input type="password" id="r_pass" placeholder="Password"><i class="fas fa-eye toggle-pass" onclick="togglePassword('r_pass', this)"></i></div>
+            <div class="input-group"><i class="fas fa-key left-icon"></i><input type="password" id="r_cpass" placeholder="Confirm Password"><i class="fas fa-eye toggle-pass" onclick="togglePassword('r_cpass', this)"></i></div>
+            <div class="input-group"><i class="fas fa-share-alt left-icon"></i><input type="text" id="r_ref" placeholder="Referral Code (Required)"></div>
+            <button class="btn-submit" id="btnRegister">REGISTER</button>
             <p class="switch-text">Already have an account? <b onclick="toggleForm('login')">Login Here</b></p>
         </div>
-
     </div>
-
-    <!-- Toast Notification -->
     <div id="toast" class="toast">Error Message</div>
 
+    <!-- UI Script -->
     <script>
-        // --- PASSWORD SHOW/HIDE LOGIC ---
-        function togglePassword(inputId, icon) {
-            const input = document.getElementById(inputId);
-            
-            if (input.type === "password") {
-                input.type = "text"; // পাসওয়ার্ড দেখাবে
-                icon.classList.remove("fa-eye");
-                icon.classList.add("fa-eye-slash"); // আইকন পরিবর্তন হবে (চোখ কাটা)
-            } else {
-                input.type = "password"; // পাসওয়ার্ড লুকাবে
-                icon.classList.remove("fa-eye-slash");
-                icon.classList.add("fa-eye"); // আইকন পরিবর্তন হবে (সাধারণ চোখ)
-            }
+        function togglePassword(id, icon) {
+            const input = document.getElementById(id);
+            if (input.type === "password") { input.type = "text"; icon.classList.replace("fa-eye", "fa-eye-slash"); } 
+            else { input.type = "password"; icon.classList.replace("fa-eye-slash", "fa-eye"); }
         }
+        function toggleForm(view) {
+            const l = document.getElementById('login-box'), r = document.getElementById('register-box');
+            if(view === 'register') { l.classList.replace('active', 'hidden'); r.classList.replace('hidden', 'active'); } 
+            else { r.classList.replace('active', 'hidden'); l.classList.replace('hidden', 'active'); }
+        }
+        function showToast(msg, color="#333") {
+            const x = document.getElementById("toast"); x.innerText = msg; x.style.backgroundColor = color; x.className = "toast show";
+            setTimeout(() => { x.className = x.className.replace("toast show", "toast"); }, 3000);
+        }
+    </script>
 
-        // --- DATABASE LOGIC ---
-        const db = {
-            getUsers: () => JSON.parse(localStorage.getItem('users')) || [],
-            saveUsers: (u) => localStorage.setItem('users', JSON.stringify(u)),
-            setCurrentUser: (u) => localStorage.setItem('currentUser', JSON.stringify(u))
+    <!-- FIREBASE LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, set, get, child, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDWu8H9uOVkHRXMbR4FFrzedZOh2wBkdJ0",
+            authDomain: "art2-245f8.firebaseapp.com",
+            databaseURL: "https://art2-245f8-default-rtdb.firebaseio.com",
+            projectId: "art2-245f8",
+            storageBucket: "art2-245f8.firebasestorage.app",
+            messagingSenderId: "963842145655",
+            appId: "1:963842145655:web:e7843407bec8528c67b572"
         };
 
-        // --- UI UTILS ---
-        function showToast(msg, color = "#333") {
-            const x = document.getElementById("toast");
-            x.innerText = msg;
-            x.style.backgroundColor = color;
-            x.className = "toast show";
-            setTimeout(function(){ x.className = x.className.replace("toast show", "toast"); }, 3000);
-        }
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-        function toggleForm(view) {
-            const l = document.getElementById('login-box');
-            const r = document.getElementById('register-box');
-            if(view === 'register') {
-                l.classList.remove('active'); l.classList.add('hidden');
-                r.classList.remove('hidden'); r.classList.add('active');
-            } else {
-                r.classList.remove('active'); r.classList.add('hidden');
-                l.classList.remove('hidden'); l.classList.add('active');
-            }
-        }
-
-        // --- LOGIN LOGIC ---
-        function handleLogin() {
-            const p = document.getElementById('l_phone').value;
-            const pass = document.getElementById('l_pass').value;
-
-            if(p === 'rafsan_25' && pass === '112233') {
-                localStorage.setItem('adminAuth', 'true');
-                showToast("Welcome Admin!", "green");
-                setTimeout(() => window.location.href = 'admin_home.html', 1000);
-                return;
-            }
-
-            const users = db.getUsers();
-            const user = users.find(u => u.phone === p && u.pass === pass);
-
-            if(user) {
-                if(user.banned) return showToast("Account is Banned!", "red");
-                db.setCurrentUser(user);
-                showToast("Login Successful!", "green");
-                setTimeout(() => window.location.href = 'home.html', 1500);
-            } else {
-                showToast("Invalid Number or Password", "red");
-            }
-        }
-
-        // --- REGISTER LOGIC ---
-        function handleRegister() {
+        // --- REGISTER ---
+        document.getElementById('btnRegister').addEventListener('click', async () => {
             const f = document.getElementById('r_fname').value;
             const l = document.getElementById('r_lname').value;
             const p = document.getElementById('r_phone').value;
             const pass = document.getElementById('r_pass').value;
             const cpass = document.getElementById('r_cpass').value;
-            const ref = document.getElementById('r_ref').value;
+            const refCode = document.getElementById('r_ref').value;
 
-            if(!f || !l || !p || !pass || !cpass || !ref) return showToast("All fields are required!", "orange");
-            if(pass !== cpass) return showToast("Passwords do not match!", "red");
+            if(!f || !l || !p || !pass || !cpass || !refCode) return showToast("All fields required!", "orange");
+            if(pass !== cpass) return showToast("Passwords don't match!", "red");
 
-            const users = db.getUsers();
-            if(users.find(u => u.phone === p)) return showToast("Phone number already registered!", "orange");
+            // Check if Phone Exists in Firebase
+            const usersRef = ref(db, 'users');
+            const phoneQuery = query(usersRef, orderByChild('phone'), equalTo(p));
+            
+            try {
+                const snapshot = await get(phoneQuery);
+                if(snapshot.exists()) return showToast("Phone already registered!", "orange");
 
-            let referrer = users.find(u => u.uid === ref);
-            if(users.length > 0 && !referrer) return showToast("Invalid Referral Code!", "red");
+                // Check Referral (By UID)
+                const refCheck = await get(child(ref(db), `users/${refCode}`));
+                // Note: First user needs manual entry in DB or remove this check for 1st user
+                if(!refCheck.exists()) return showToast("Invalid Referral Code!", "red");
 
-            const newUser = {
-                uid: 'UID' + Math.floor(100000 + Math.random() * 900000),
-                fname: f, lname: l, phone: p, pass: pass,
-                balance: 0, isActive: false, referredBy: ref, team: [], withdraws: [], actReq: null
-            };
+                // Create User
+                const uid = 'UID' + Math.floor(100000 + Math.random() * 900000);
+                const newUser = {
+                    uid: uid,
+                    fname: f, lname: l, phone: p, pass: pass,
+                    balance: 0, isActive: false, referredBy: refCode,
+                    joinDate: new Date().toLocaleDateString()
+                };
 
-            if(referrer) {
-                const refIndex = users.findIndex(u => u.uid === ref);
-                users[refIndex].team.push({ uid: newUser.uid, name: f + " " + l, status: 'pending', joinDate: new Date().toLocaleDateString() });
+                // Save User
+                await set(ref(db, 'users/' + uid), newUser);
+
+                // Add to Referrer's Team
+                // Since Firebase is NoSQL, simpler to just store user and query team later, 
+                // but for this structure we can add a sub-node
+                const teamData = { uid: uid, name: f + " " + l, status: 'pending', joinDate: new Date().toLocaleDateString() };
+                // Generate a unique key for team member
+                const teamKey = 'TM' + Date.now();
+                await set(ref(db, `users/${refCode}/team/${teamKey}`), teamData);
+
+                showToast("Registered! Please Login", "green");
+                setTimeout(() => toggleForm('login'), 1500);
+
+            } catch (error) {
+                showToast("Error: " + error.message, "red");
+                console.error(error);
+            }
+        });
+
+        // --- LOGIN ---
+        document.getElementById('btnLogin').addEventListener('click', async () => {
+            const p = document.getElementById('l_phone').value;
+            const pass = document.getElementById('l_pass').value;
+
+            // Admin Bypass
+            if(p === 'rafsan_25' && pass === '112233') {
+                localStorage.setItem('adminAuth', 'true');
+                window.location.href = 'admin_home.html';
+                return;
             }
 
-            users.push(newUser);
-            db.saveUsers(users);
+            const usersRef = ref(db, 'users');
+            const phoneQuery = query(usersRef, orderByChild('phone'), equalTo(p));
 
-            showToast("Registration Successful! Please Login.", "green");
-            setTimeout(() => { toggleForm('login'); document.getElementById('l_phone').value = p; }, 1500);
-        }
+            try {
+                const snapshot = await get(phoneQuery);
+                if(snapshot.exists()) {
+                    // Snapshot returns an object with the key (UID)
+                    let userData = null;
+                    snapshot.forEach(childSnapshot => {
+                        const data = childSnapshot.val();
+                        if(data.pass === pass) userData = data;
+                    });
+
+                    if(userData) {
+                        localStorage.setItem('currentUid', userData.uid); // Store just UID
+                        showToast("Login Successful!", "green");
+                        setTimeout(() => window.location.href = 'home.html', 1500);
+                    } else {
+                        showToast("Wrong Password!", "red");
+                    }
+                } else {
+                    showToast("User not found!", "red");
+                }
+            } catch (error) {
+                showToast("Login Error", "red");
+            }
+        });
     </script>
 </body>
 </html>
