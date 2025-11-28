@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Part-Time Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- PREMIUM CSS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; min-height: 100vh; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientBG 15s ease infinite; padding: 20px; color: white; }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
+
+        /* Header */
+        .header-top { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 14px; border-radius: 12px; cursor: pointer; margin-right: 15px; transition: 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.4); }
+        h2 { font-size: 22px; font-weight: 600; }
+
+        /* Profile Top Card */
+        .profile-header {
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px); border-radius: 20px;
+            padding: 30px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15); margin-bottom: 25px; animation: fadeIn 0.8s;
+        }
+        .profile-img {
+            width: 80px; height: 80px; background: rgba(255,255,255,0.2); border-radius: 50%;
+            margin: 0 auto 15px; display: flex; justify-content: center; align-items: center;
+            font-size: 35px; color: white; border: 2px solid rgba(255,255,255,0.5);
+            animation: pulse 3s infinite;
+        }
+        .profile-header h3 { font-size: 24px; font-weight: 600; }
+        .uid-badge {
+            background: rgba(0,0,0,0.3); padding: 5px 15px; border-radius: 20px;
+            font-size: 12px; margin-top: 5px; display: inline-block; letter-spacing: 1px;
+        }
+
+        /* Forms Section */
+        .settings-card {
+            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(5px);
+            border-radius: 15px; padding: 20px; margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1); animation: slideUp 1s;
+        }
+        .card-title { font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; color: #ffd700; }
+        
+        label { font-size: 12px; opacity: 0.8; display: block; margin-bottom: 5px; }
+        input {
+            width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: none;
+            border-radius: 10px; color: white; outline: none; margin-bottom: 15px;
+        }
+        input:focus { background: rgba(255,255,255,0.2); }
+
+        .btn-update {
+            width: 100%; padding: 12px; background: linear-gradient(to right, #00c6ff, #0072ff);
+            border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn-update:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4); }
+
+        /* About Section */
+        .about-text { font-size: 13px; line-height: 1.6; opacity: 0.8; text-align: justify; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
+
+        /* Toast */
+        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 5px; padding: 16px; position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%); }
+        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <div class="header-top">
+            <button class="back-btn" onclick="window.location.href='home.html'"><i class="fas fa-arrow-left"></i></button>
+            <h2>My Profile</h2>
+        </div>
+
+        <!-- Profile Top -->
+        <div class="profile-header">
+            <div class="profile-img"><i class="fas fa-user"></i></div>
+            <h3 id="disp_name">Loading...</h3>
+            <div class="uid-badge">UID: <span id="disp_uid">...</span></div>
+            <p style="margin-top:10px; font-size:12px; opacity:0.7;">Joined: <span id="disp_date">...</span></p>
+        </div>
+
+        <!-- Update Name -->
+        <div class="settings-card">
+            <h4 class="card-title"><i class="fas fa-pen"></i> Edit Profile</h4>
+            <label>First Name</label>
+            <input type="text" id="inp_fname">
+            <label>Last Name</label>
+            <input type="text" id="inp_lname">
+            <button class="btn-update" id="btnUpdateName">Update Name</button>
+        </div>
+
+        <!-- Change Password -->
+        <div class="settings-card">
+            <h4 class="card-title"><i class="fas fa-lock"></i> Security</h4>
+            <label>Old Password</label>
+            <input type="password" id="old_pass" placeholder="Current Password">
+            <label>New Password</label>
+            <input type="text" id="new_pass" placeholder="New Password"> <!-- Text type to see easily -->
+            <button class="btn-update" id="btnUpdatePass" style="background: linear-gradient(to right, #f857a6, #ff5858);">Change Password</button>
+        </div>
+
+        <!-- About Section -->
+        <div class="settings-card">
+            <h4 class="card-title"><i class="fas fa-info-circle"></i> About</h4>
+            <p class="about-text">
+                Welcome to our Part-Time Job Platform. We provide the best opportunities for you to earn from home. 
+                <br><br>
+                <b>Version:</b> 1.0.0 (Premium)<br>
+                <b>Developer:</b> Rafsan Tech
+            </p>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Firebase Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, update, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDWu8H9uOVkHRXMbR4FFrzedZOh2wBkdJ0",
+            authDomain: "art2-245f8.firebaseapp.com",
+            databaseURL: "https://art2-245f8-default-rtdb.firebaseio.com",
+            projectId: "art2-245f8",
+            storageBucket: "art2-245f8.firebasestorage.app",
+            messagingSenderId: "963842145655",
+            appId: "1:963842145655:web:e7843407bec8528c67b572"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const uid = localStorage.getItem('currentUid');
+
+        if(!uid) window.location.href = 'login_register.html';
+
+        let currentPass = "";
+
+        // --- FETCH USER DATA ---
+        const userRef = ref(db, 'users/' + uid);
+        onValue(userRef, (snapshot) => {
+            const user = snapshot.val();
+            if(user) {
+                document.getElementById('disp_name').innerText = user.fname + " " + user.lname;
+                document.getElementById('disp_uid').innerText = user.uid;
+                document.getElementById('disp_date').innerText = user.joinDate || "N/A";
+                
+                // Pre-fill inputs
+                document.getElementById('inp_fname').value = user.fname;
+                document.getElementById('inp_lname').value = user.lname;
+                
+                currentPass = user.pass; // Store for verification
+            }
+        });
+
+        // --- UPDATE NAME ---
+        document.getElementById('btnUpdateName').addEventListener('click', () => {
+            const f = document.getElementById('inp_fname').value;
+            const l = document.getElementById('inp_lname').value;
+
+            if(!f || !l) return showToast("Fields cannot be empty", "orange");
+
+            update(userRef, {
+                fname: f,
+                lname: l
+            }).then(() => {
+                showToast("Name Updated Successfully!", "green");
+            }).catch(err => showToast("Error!", "red"));
+        });
+
+        // --- UPDATE PASSWORD ---
+        document.getElementById('btnUpdatePass').addEventListener('click', () => {
+            const oldP = document.getElementById('old_pass').value;
+            const newP = document.getElementById('new_pass').value;
+
+            if(!oldP || !newP) return showToast("Fill all password fields", "orange");
+
+            if(oldP !== currentPass) {
+                showToast("Old password incorrect!", "red");
+                return;
+            }
+
+            if(newP.length < 4) return showToast("Password too short", "orange");
+
+            update(userRef, {
+                pass: newP
+            }).then(() => {
+                showToast("Password Changed!", "green");
+                document.getElementById('old_pass').value = "";
+                document.getElementById('new_pass').value = "";
+            }).catch(err => showToast("Error!", "red"));
+        });
+
+        // --- UTILS ---
+        window.showToast = function(msg, color="#333") {
+            const x = document.getElementById("toast");
+            x.innerText = msg;
+            x.style.backgroundColor = color;
+            x.className = "toast show";
+            setTimeout(() => { x.className = x.className.replace("toast show", "toast"); }, 3000);
+        };
+    </script>
+</body>
+</html>
