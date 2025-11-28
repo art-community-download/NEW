@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Part-Time Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- GLOBAL PREMIUM STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 20px;
+            color: white;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* --- HEADER SECTION --- */
+        .app-header {
+            text-align: center;
+            margin-bottom: 20px;
+            animation: slideDown 0.8s ease;
+        }
+        .app-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+        }
+        .app-header p {
+            font-size: 12px;
+            opacity: 0.8;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* --- PROFILE CARD --- */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease;
+        }
+        
+        .user-info h2 { font-size: 20px; font-weight: 600; }
+        .user-info p { font-size: 12px; opacity: 0.8; }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-active { background: #00b09b; box-shadow: 0 0 10px #00b09b; }
+        .status-inactive { background: #ff416c; box-shadow: 0 0 10px #ff416c; }
+
+        /* --- DASHBOARD GRID --- */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 Columns */
+            gap: 15px;
+            animation: slideUp 1s ease;
+        }
+
+        .menu-btn {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 120px;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .menu-btn i {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .menu-btn span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Active Button Highlight */
+        .btn-highlight {
+            background: linear-gradient(135deg, #FFD700, #ff8c00); /* Gold Gradient */
+            color: #333;
+            border: none;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        .btn-highlight:hover { background: linear-gradient(135deg, #ff8c00, #FFD700); }
+
+        /* Locked State */
+        .locked {
+            filter: grayscale(100%);
+            opacity: 0.6;
+            cursor: not-allowed;
+            pointer-events: none; /* Disables click */
+        }
+        .lock-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Logout Button */
+        .logout-btn {
+            width: 100%;
+            margin-top: 30px;
+            padding: 15px;
+            background: rgba(220, 53, 69, 0.8);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .logout-btn:hover { background: red; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); } }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- App Header -->
+        <div class="app-header">
+            <h1>PART-TIME</h1>
+            <p>Job Platform</p>
+        </div>
+
+        <!-- Profile Info Card -->
+        <div class="profile-card">
+            <div class="user-info">
+                <h2 id="uName">Loading...</h2>
+                <p>UID: <span id="uID">...</span></p>
+            </div>
+            <div id="uStatus" class="status-badge status-inactive">
+                Checking...
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="grid-menu">
+            
+            <!-- 1. Account Active (Always Clickable) -->
+            <a href="#" onclick="navigate('account_active.html')" id="btnActive" class="menu-btn btn-highlight">
+                <i class="fas fa-bolt"></i>
+                <span>Account Active</span>
+            </a>
+
+            <!-- 2. My Team -->
+            <div onclick="navigate('my_team.html')" id="btnTeam" class="menu-btn locked">
+                <i class="fas fa-lock lock-icon"></i>
+                <i class="fas fa-users"></i>
+                <span>My Team</span>
+            </div>
+
+            <!-- 3. My Account -->
+            <div onclick="navigate('my_account.html')" id="btnProfile" class="menu-btn locked">
+                <i class="fas fa-lock lock-icon"></i>
+                <i class="fas fa-user-circle"></i>
+                <span>My Account</span>
+            </div>
+
+            <!-- 4. Withdraw -->
+            <div onclick="navigate('withdraw.html')" id="btnWithdraw" class="menu-btn locked">
+                <i class="fas fa-lock lock-icon"></i>
+                <i class="fas fa-hand-holding-usd"></i>
+                <span>Withdraw</span>
+            </div>
+
+            <!-- 5. Balance -->
+            <div onclick="navigate('balance.html')" id="btnBalance" class="menu-btn locked">
+                <i class="fas fa-lock lock-icon"></i>
+                <i class="fas fa-wallet"></i>
+                <span>Balance</span>
+            </div>
+
+            <!-- 6. VIP Bonus -->
+            <div onclick="navigate('vip_bonus.html')" id="btnVip" class="menu-btn locked">
+                <i class="fas fa-lock lock-icon"></i>
+                <i class="fas fa-crown"></i>
+                <span>VIP Bonus</span>
+            </div>
+
+        </div>
+
+        <button onclick="logout()" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+
+    </div>
+
+    <script>
+        // --- AUTH CHECK ---
+        const storedUser = localStorage.getItem('currentUser');
+        if(!storedUser) {
+            window.location.href = 'login_register.html';
+        }
+
+        // --- DATA LOAD ---
+        // আমরা সরাসরি currentUser ব্যবহার না করে মেইন ডাটাবেস (users) থেকে ফ্রেশ ডাটা আনবো
+        // কারণ অ্যাডমিন প্যানেল থেকে স্ট্যাটাস চেঞ্জ করলে currentUser এ আপডেট নাও থাকতে পারে।
+        const dbUsers = JSON.parse(localStorage.getItem('users')) || [];
+        const currentUserData = JSON.parse(storedUser);
+        
+        // Find current user mostly updated data
+        const user = dbUsers.find(u => u.uid === currentUserData.uid) || currentUserData;
+
+        // --- UI UPDATE LOGIC ---
+        document.getElementById('uName').innerText = user.fname + " " + user.lname;
+        document.getElementById('uID').innerText = user.uid;
+        
+        const statusBadge = document.getElementById('uStatus');
+        
+        // Button IDs
+        const buttons = ['btnTeam', 'btnProfile', 'btnWithdraw', 'btnBalance', 'btnVip'];
+
+        if(user.isActive) {
+            // IF ACCOUNT IS ACTIVE
+            statusBadge.innerText = "Active";
+            statusBadge.classList.replace('status-inactive', 'status-active');
+            
+            // Remove 'Active' button highlight as it's done
+            const actBtn = document.getElementById('btnActive');
+            actBtn.classList.remove('btn-highlight');
+            actBtn.style.background = "rgba(255, 255, 255, 0.1)";
+            actBtn.style.color = "white";
+
+            // Unlock all buttons
+            buttons.forEach(id => {
+                const btn = document.getElementById(id);
+                btn.classList.remove('locked');
+                // Remove lock icon
+                const lockIcon = btn.querySelector('.lock-icon');
+                if(lockIcon) lockIcon.remove();
+            });
+
+        } else {
+            // IF ACCOUNT IS INACTIVE
+            statusBadge.innerText = "Inactive";
+            // Buttons remain locked by default HTML class 'locked'
+        }
+
+        // --- NAVIGATION FUNCTION ---
+        function navigate(page) {
+            // JS দিয়েও চেক করা, যদি কেউ HTML হ্যাক করে লক সরায়
+            if(page === 'account_active.html') {
+                window.location.href = page;
+                return;
+            }
+
+            if(user.isActive) {
+                window.location.href = page;
+            } else {
+                alert("Please Activate Your Account First!");
+            }
+        }
+
+        // --- LOGOUT ---
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'login_register.html';
+        }
+    </script>
+</body>
+</html>
