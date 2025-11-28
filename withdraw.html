@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw | Part-Time Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- PREMIUM CSS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; min-height: 100vh; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientBG 15s ease infinite; padding: 20px; color: white; }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
+
+        /* Header */
+        .header-top { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 14px; border-radius: 12px; cursor: pointer; margin-right: 15px; }
+        h2 { font-size: 22px; font-weight: 600; }
+
+        /* Balance Card */
+        .bal-card {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            border-radius: 20px; padding: 25px; text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); margin-bottom: 25px;
+            position: relative; overflow: hidden; animation: slideDown 0.8s;
+        }
+        .bal-label { font-size: 12px; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+        .bal-amount { font-size: 32px; font-weight: bold; margin: 5px 0 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        
+        .total-w-box {
+            background: rgba(0,0,0,0.2); border-radius: 10px; padding: 10px;
+            display: inline-block; font-size: 13px;
+        }
+
+        /* Rules Box */
+        .rules-box {
+            background: rgba(255, 65, 108, 0.1); border: 1px solid rgba(255, 65, 108, 0.3);
+            border-radius: 15px; padding: 15px; margin-bottom: 20px; font-size: 12px;
+            display: flex; align-items: center; gap: 10px; color: #ffcccb;
+        }
+
+        /* Form */
+        .form-area { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 20px; margin-bottom: 25px; backdrop-filter: blur(5px); }
+        label { display: block; font-size: 12px; margin-bottom: 5px; opacity: 0.8; }
+        select, input { width: 100%; padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: white; margin-bottom: 15px; outline: none; }
+        option { background: #333; }
+        
+        .btn-withdraw {
+            width: 100%; padding: 12px; background: white; color: #333; border: none;
+            border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.3s;
+        }
+        .btn-withdraw:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(255,255,255,0.3); }
+
+        /* History */
+        .hist-title { font-size: 16px; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px; }
+        .hist-item {
+            background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+            border-left: 4px solid #ccc;
+        }
+        .h-info h4 { font-size: 14px; margin-bottom: 3px; }
+        .h-info p { font-size: 11px; opacity: 0.6; }
+        .h-status { font-size: 11px; font-weight: bold; padding: 4px 8px; border-radius: 5px; }
+        
+        /* Status Colors */
+        .st-pending { color: #ffd700; background: rgba(255, 215, 0, 0.1); }
+        .st-success { color: #38ef7d; background: rgba(56, 239, 125, 0.1); }
+        .st-rejected { color: #ff416c; background: rgba(255, 65, 108, 0.1); }
+        .bd-pending { border-left-color: #ffd700; }
+        .bd-success { border-left-color: #38ef7d; }
+        .bd-rejected { border-left-color: #ff416c; }
+
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 5px; padding: 16px; position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%); }
+        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header-top">
+            <button class="back-btn" onclick="window.location.href='home.html'"><i class="fas fa-arrow-left"></i></button>
+            <h2>Withdraw Money</h2>
+        </div>
+
+        <!-- Balance Card -->
+        <div class="bal-card">
+            <div class="bal-label">Current Balance</div>
+            <div class="bal-amount"><span id="currBal">0</span> TK</div>
+            
+            <div class="total-w-box">
+                <i class="fas fa-history"></i> Total Withdrawn: <span id="totalWithdrawn">0</span> TK
+            </div>
+        </div>
+
+        <!-- Admin Rules Display -->
+        <div class="rules-box">
+            <i class="fas fa-exclamation-circle"></i>
+            <div>
+                <p>Min Withdraw: <span id="rule_min_money">...</span> TK</p>
+                <p>Required Active Referrals: <span id="rule_min_ref">...</span></p>
+            </div>
+        </div>
+
+        <!-- Withdraw Form -->
+        <div class="form-area">
+            <label>Payment Method</label>
+            <select id="w_method">
+                <option value="Bkash">Bkash</option>
+                <option value="Nagad">Nagad</option>
+            </select>
+            
+            <label>Amount (TK)</label>
+            <input type="number" id="w_amount" placeholder="Enter Amount">
+            
+            <label>Payment Number</label>
+            <input type="number" id="w_number" placeholder="01xxxxxxxxx">
+            
+            <button class="btn-withdraw" id="btnSubmit">Submit Request</button>
+        </div>
+
+        <!-- History (Last 5) -->
+        <h3 class="hist-title">Recent History (Last 5)</h3>
+        <div id="history-list">
+            <p style="text-align:center; opacity:0.5; font-size:12px;">Loading history...</p>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, update, push, onValue, get } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDWu8H9uOVkHRXMbR4FFrzedZOh2wBkdJ0",
+            authDomain: "art2-245f8.firebaseapp.com",
+            databaseURL: "https://art2-245f8-default-rtdb.firebaseio.com",
+            projectId: "art2-245f8",
+            storageBucket: "art2-245f8.firebasestorage.app",
+            messagingSenderId: "963842145655",
+            appId: "1:963842145655:web:e7843407bec8528c67b572"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const uid = localStorage.getItem('currentUid');
+
+        if(!uid) window.location.href = 'login_register.html';
+
+        let currentBalance = 0;
+        let activeRefCount = 0;
+        
+        // Admin Settings (Defaults)
+        let minWithdrawLimit = 100;
+        let minActiveRefs = 0;
+
+        // --- 1. GET ADMIN SETTINGS ---
+        const settingsRef = ref(db, 'settings');
+        onValue(settingsRef, (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                minWithdrawLimit = parseInt(data.min_withdraw || 100);
+                minActiveRefs = parseInt(data.min_referrals || 0); // Default 0 if not set
+            }
+            document.getElementById('rule_min_money').innerText = minWithdrawLimit;
+            document.getElementById('rule_min_ref').innerText = minActiveRefs;
+        });
+
+        // --- 2. COUNT ACTIVE REFERRALS ---
+        // We query all users to count who referred by ME and is ACTIVE
+        // (Note: In a large app, store this count in user object, but for this scale query is fine)
+        const allUsersRef = ref(db, 'users');
+        onValue(allUsersRef, (snapshot) => {
+            const users = snapshot.val();
+            activeRefCount = 0;
+            if(users) {
+                Object.values(users).forEach(u => {
+                    if(u.referredBy === uid && u.isActive) {
+                        activeRefCount++;
+                    }
+                });
+            }
+        });
+
+        // --- 3. GET USER DATA (Balance & History) ---
+        const userRef = ref(db, 'users/' + uid);
+        onValue(userRef, (snapshot) => {
+            const user = snapshot.val();
+            if(!user) return;
+
+            currentBalance = parseFloat(user.balance || 0);
+            document.getElementById('currBal').innerText = currentBalance;
+            document.getElementById('totalWithdrawn').innerText = user.total_withdraw || 0;
+
+            // Render History (Last 5)
+            renderHistory(user.withdraws);
+        });
+
+        function renderHistory(withdrawsObj) {
+            const list = document.getElementById('history-list');
+            list.innerHTML = "";
+
+            if(!withdrawsObj) {
+                list.innerHTML = '<p style="text-align:center; opacity:0.5;">No transactions found.</p>';
+                return;
+            }
+
+            // Convert object to array
+            const historyArr = Object.values(withdrawsObj);
+            
+            // Sort by Date/Time (Assuming push ID is chronological, or add timestamp)
+            // Here simply reversing to show latest first
+            const latestFive = historyArr.reverse().slice(0, 5);
+
+            latestFive.forEach(w => {
+                let stClass = 'st-pending';
+                let bdClass = 'bd-pending';
+                if(w.status === 'success') { stClass = 'st-success'; bdClass = 'bd-success'; }
+                if(w.status === 'rejected') { stClass = 'st-rejected'; bdClass = 'bd-rejected'; }
+
+                list.innerHTML += `
+                    <div class="hist-item ${bdClass}">
+                        <div class="h-info">
+                            <h4>${w.method} - ${w.amount} TK</h4>
+                            <p>${w.number}</p>
+                            <p>${w.date}</p>
+                        </div>
+                        <div class="h-status ${stClass}">${w.status.toUpperCase()}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- 4. SUBMIT WITHDRAWAL ---
+        document.getElementById('btnSubmit').addEventListener('click', () => {
+            const method = document.getElementById('w_method').value;
+            const amount = parseFloat(document.getElementById('w_amount').value);
+            const number = document.getElementById('w_number').value;
+
+            // Validations
+            if(!amount || !number) return showToast("Fill all details", "orange");
+            
+            if(amount > currentBalance) return showToast("Insufficient Balance!", "red");
+            
+            if(amount < minWithdrawLimit) return showToast(`Min withdraw is ${minWithdrawLimit} TK`, "orange");
+            
+            if(activeRefCount < minActiveRefs) return showToast(`You need ${minActiveRefs} active referrals!`, "red");
+
+            // Execute Withdraw
+            // 1. Deduct Balance immediately (to prevent double click)
+            const newBal = currentBalance - amount;
+            
+            update(userRef, {
+                balance: newBal
+            })
+            .then(() => {
+                // 2. Add to Withdraw Request List
+                const withdrawRef = ref(db, 'users/' + uid + '/withdraws');
+                push(withdrawRef, {
+                    amount: amount,
+                    method: method,
+                    number: number,
+                    status: 'pending',
+                    date: new Date().toLocaleString() // You can format this better
+                });
+                
+                showToast("Withdraw Request Sent!", "green");
+                document.getElementById('w_amount').value = "";
+                document.getElementById('w_number').value = "";
+            })
+            .catch(err => {
+                showToast("Error occurred!", "red");
+            });
+        });
+
+        // --- UTILS ---
+        window.showToast = function(msg, color="#333") {
+            const x = document.getElementById("toast");
+            x.innerText = msg;
+            x.style.backgroundColor = color;
+            x.className = "toast show";
+            setTimeout(() => { x.className = x.className.replace("toast show", "toast"); }, 3000);
+        };
+    </script>
+</body>
+</html>
