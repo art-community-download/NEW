@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        /* --- SAME CSS AS BEFORE --- */
+        /* --- SAME PREMIUM CSS --- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Poppins', sans-serif; min-height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientBG 10s ease infinite; padding: 20px; }
         @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
@@ -29,7 +29,7 @@
         .hidden { display: none; opacity: 0; transform: translateX(50px); }
         .active { display: block; opacity: 1; transform: translateX(0); animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 5px; padding: 16px; position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%); font-size: 15px; }
+        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 5px; padding: 16px; position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%); }
         .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
@@ -98,7 +98,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
-        // --- REGISTER ---
+        // --- REGISTER LOGIC ---
         document.getElementById('btnRegister').addEventListener('click', async () => {
             const f = document.getElementById('r_fname').value;
             const l = document.getElementById('r_lname').value;
@@ -110,7 +110,7 @@
             if(!f || !l || !p || !pass || !cpass || !refCode) return showToast("All fields required!", "orange");
             if(pass !== cpass) return showToast("Passwords don't match!", "red");
 
-            // Check if Phone Exists in Firebase
+            // Check duplicate phone
             const usersRef = ref(db, 'users');
             const phoneQuery = query(usersRef, orderByChild('phone'), equalTo(p));
             
@@ -118,32 +118,39 @@
                 const snapshot = await get(phoneQuery);
                 if(snapshot.exists()) return showToast("Phone already registered!", "orange");
 
-                // Check Referral (By UID)
-                const refCheck = await get(child(ref(db), `users/${refCode}`));
-                // Note: First user needs manual entry in DB or remove this check for 1st user
-                if(!refCheck.exists()) return showToast("Invalid Referral Code!", "red");
+                // --- ADMIN PERSONAL REFERRAL LOGIC ---
+                // 1. Normal Check: If code is NOT "rafsan_25", check DB
+                // 2. Admin Check: If code IS "rafsan_25", allow instantly (Bypass)
+                
+                if(refCode !== "rafsan_25" && refCode !== "OWNER_SETUP") {
+                    const refCheck = await get(child(ref(db), `users/${refCode}`));
+                    if(!refCheck.exists()) return showToast("Invalid Referral Code!", "red");
+                }
 
-                // Create User
-                const uid = 'UID' + Math.floor(100000 + Math.random() * 900000);
+                // Setup UID
+                let uid = 'UID' + Math.floor(100000 + Math.random() * 900000);
+                let finalReferrer = refCode;
+
+                // --- OWNER ACCOUNT SETUP ---
+                // যদি আপনি "OWNER_SETUP" রেফারেল কোড দিয়ে রেজিস্টার করেন, 
+                // তবে আপনার UID হবে 'rafsan_25' (এটিই হবে আপনার মেইন এডমিন একাউন্ট)
+                if(refCode === "OWNER_SETUP") {
+                    uid = "rafsan_25"; 
+                    finalReferrer = ""; // Owner has no referrer
+                    showToast("Creating Admin Account...", "#00c6ff");
+                }
+
                 const newUser = {
                     uid: uid,
                     fname: f, lname: l, phone: p, pass: pass,
-                    balance: 0, isActive: false, referredBy: refCode,
+                    balance: 0, isActive: false, referredBy: finalReferrer,
                     joinDate: new Date().toLocaleDateString()
                 };
 
-                // Save User
+                // Save to Firebase
                 await set(ref(db, 'users/' + uid), newUser);
 
-                // Add to Referrer's Team
-                // Since Firebase is NoSQL, simpler to just store user and query team later, 
-                // but for this structure we can add a sub-node
-                const teamData = { uid: uid, name: f + " " + l, status: 'pending', joinDate: new Date().toLocaleDateString() };
-                // Generate a unique key for team member
-                const teamKey = 'TM' + Date.now();
-                await set(ref(db, `users/${refCode}/team/${teamKey}`), teamData);
-
-                showToast("Registered! Please Login", "green");
+                showToast("Registered Successfully!", "green");
                 setTimeout(() => toggleForm('login'), 1500);
 
             } catch (error) {
@@ -152,25 +159,25 @@
             }
         });
 
-        // --- LOGIN ---
+        // --- LOGIN LOGIC ---
         document.getElementById('btnLogin').addEventListener('click', async () => {
             const p = document.getElementById('l_phone').value;
             const pass = document.getElementById('l_pass').value;
 
-            // Admin Bypass
+            // Admin Panel Access Bypass
             if(p === 'rafsan_25' && pass === '112233') {
                 localStorage.setItem('adminAuth', 'true');
-                window.location.href = 'admin_home.html';
+                window.location.href = 'admin_index.html'; // Goes to Admin Loading
                 return;
             }
 
+            // User Login Check
             const usersRef = ref(db, 'users');
             const phoneQuery = query(usersRef, orderByChild('phone'), equalTo(p));
 
             try {
                 const snapshot = await get(phoneQuery);
                 if(snapshot.exists()) {
-                    // Snapshot returns an object with the key (UID)
                     let userData = null;
                     snapshot.forEach(childSnapshot => {
                         const data = childSnapshot.val();
@@ -178,7 +185,11 @@
                     });
 
                     if(userData) {
-                        localStorage.setItem('currentUid', userData.uid); // Store just UID
+                        if(userData.banned) {
+                            showToast("Your account is BANNED!", "red");
+                            return;
+                        }
+                        localStorage.setItem('currentUid', userData.uid);
                         showToast("Login Successful!", "green");
                         setTimeout(() => window.location.href = 'home.html', 1500);
                     } else {
