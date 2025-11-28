@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activate Account | Part-Time Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- PREMIUM CSS (Matched with previous pages) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; min-height: 100vh; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientBG 15s ease infinite; padding: 20px; color: white; display:flex; justify-content:center; align-items:center; }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 30px; width: 100%; max-width: 450px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); position: relative;
+        }
+
+        /* Header */
+        .header-top { display: flex; align-items: center; margin-bottom: 25px; }
+        .back-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 12px; border-radius: 10px; cursor: pointer; margin-right: 15px; transition: 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.4); }
+        h2 { font-size: 20px; font-weight: 600; }
+
+        /* Payment Info Box */
+        .pay-info {
+            background: rgba(0, 0, 0, 0.2); border-radius: 15px; padding: 20px; margin-bottom: 25px; border-left: 4px solid #00c6ff;
+        }
+        .pay-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 14px; }
+        .pay-row:last-child { margin-bottom: 0; }
+        .copy-btn { cursor: pointer; color: #00c6ff; margin-left: 10px; }
+        .fee-highlight { color: #ffd700; font-weight: bold; font-size: 18px; }
+
+        /* Form Inputs */
+        .input-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 13px; opacity: 0.8; }
+        select, input {
+            width: 100%; padding: 12px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px; color: white; outline: none; transition: 0.3s;
+        }
+        select option { background: #333; color: white; }
+        input:focus { background: rgba(255,255,255,0.2); border-color: #00c6ff; }
+
+        .btn-submit {
+            width: 100%; padding: 14px; background: linear-gradient(to right, #11998e, #38ef7d); border: none; border-radius: 30px;
+            color: white; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 10px; transition: 0.3s; box-shadow: 0 5px 15px rgba(56, 239, 125, 0.4);
+        }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(56, 239, 125, 0.6); }
+
+        /* STATUS SCREENS */
+        .status-screen { text-align: center; padding: 40px 20px; display: none; }
+        .active-view { display: block; animation: fadeIn 0.5s; }
+        
+        /* Pending Animation */
+        .pulse-icon {
+            font-size: 60px; color: #ffd700; margin-bottom: 20px; animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.7; } 100% { transform: scale(1); opacity: 1; } }
+
+        /* Success Animation */
+        .success-icon {
+            font-size: 60px; color: #38ef7d; margin-bottom: 20px; animation: bounce 1s;
+        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Toast */
+        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 5px; padding: 16px; position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%); }
+        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- HEADER -->
+        <div class="header-top">
+            <button class="back-btn" onclick="window.location.href='home.html'"><i class="fas fa-arrow-left"></i></button>
+            <h2>Activate Account</h2>
+        </div>
+
+        <!-- VIEW 1: FORM (Default) -->
+        <div id="view-form" class="active-view">
+            <!-- Admin Numbers (Fetched from Firebase Settings) -->
+            <div class="pay-info">
+                <div class="pay-row">
+                    <span>Activation Fee:</span>
+                    <span class="fee-highlight"><span id="disp_fee">500</span> BDT</span>
+                </div>
+                <div class="pay-row">
+                    <span>Bkash (Send Money):</span>
+                    <div>
+                        <span id="disp_bkash">Loading...</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyText('disp_bkash')"></i>
+                    </div>
+                </div>
+                <div class="pay-row">
+                    <span>Nagad (Send Money):</span>
+                    <div>
+                        <span id="disp_nagad">Loading...</span>
+                        <i class="fas fa-copy copy-btn" onclick="copyText('disp_nagad')"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Payment Method</label>
+                <select id="method">
+                    <option value="Bkash">Bkash</option>
+                    <option value="Nagad">Nagad</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Sender Number (যে নাম্বার থেকে পাঠিয়েছেন)</label>
+                <input type="number" id="sender" placeholder="017xxxxxxxx">
+            </div>
+            <div class="input-group">
+                <label>Transaction ID (TrxID)</label>
+                <input type="text" id="trx" placeholder="Ex: 9G7H6F5D">
+            </div>
+
+            <button class="btn-submit" id="btnSubmit">Submit Request</button>
+        </div>
+
+        <!-- VIEW 2: PENDING -->
+        <div id="view-pending" class="status-screen">
+            <i class="fas fa-clock pulse-icon"></i>
+            <h2>Request Pending</h2>
+            <p style="opacity:0.8; margin-top:10px;">Your payment is being verified by Admin.</p>
+            <p style="font-size:12px; margin-top:20px; color:#ffd700;">Please wait, page will auto-update.</p>
+            <button class="back-btn" style="margin-top:30px; width:auto; background:#333;" onclick="window.location.href='home.html'">Go Home</button>
+        </div>
+
+        <!-- VIEW 3: SUCCESS -->
+        <div id="view-success" class="status-screen">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h2>Successful!</h2>
+            <p>Your account is now Active.</p>
+            <button class="btn-submit" onclick="window.location.href='home.html'">Go to Dashboard</button>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast">Message</div>
+
+    <!-- SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, update, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDWu8H9uOVkHRXMbR4FFrzedZOh2wBkdJ0",
+            authDomain: "art2-245f8.firebaseapp.com",
+            databaseURL: "https://art2-245f8-default-rtdb.firebaseio.com",
+            projectId: "art2-245f8",
+            storageBucket: "art2-245f8.firebasestorage.app",
+            messagingSenderId: "963842145655",
+            appId: "1:963842145655:web:e7843407bec8528c67b572"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const uid = localStorage.getItem('currentUid');
+
+        if(!uid) window.location.href = 'login_register.html';
+
+        // --- 1. LOAD SETTINGS (Admin Numbers) ---
+        // Note: For now, default values are set. In Admin panel you can save to 'settings' node.
+        const settingsRef = ref(db, 'settings');
+        onValue(settingsRef, (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                document.getElementById('disp_fee').innerText = data.fee || "500";
+                document.getElementById('disp_bkash').innerText = data.bkash || "01xxxxxxxxx";
+                document.getElementById('disp_nagad').innerText = data.nagad || "01xxxxxxxxx";
+            } else {
+                // Default Placeholders if admin hasn't set anything
+                document.getElementById('disp_bkash').innerText = "01700000000";
+                document.getElementById('disp_nagad').innerText = "01800000000";
+            }
+        });
+
+        // --- 2. CHECK USER STATUS REALTIME ---
+        const userRef = ref(db, 'users/' + uid);
+        onValue(userRef, (snapshot) => {
+            const user = snapshot.val();
+            if(!user) return;
+
+            // Hide all first
+            document.getElementById('view-form').style.display = 'none';
+            document.getElementById('view-pending').style.display = 'none';
+            document.getElementById('view-success').style.display = 'none';
+
+            if(user.isActive) {
+                // If Admin accepted
+                document.getElementById('view-success').style.display = 'block';
+            } else if (user.actReq === 'pending') {
+                // If User submitted but admin didn't accept yet
+                document.getElementById('view-pending').style.display = 'block';
+            } else {
+                // Default: Show Form
+                document.getElementById('view-form').style.display = 'block';
+            }
+        });
+
+        // --- 3. SUBMIT REQUEST ---
+        document.getElementById('btnSubmit').addEventListener('click', () => {
+            const method = document.getElementById('method').value;
+            const sender = document.getElementById('sender').value;
+            const trx = document.getElementById('trx').value;
+
+            if(!sender || !trx) {
+                showToast("Please fill all details", "orange");
+                return;
+            }
+
+            // Update Firebase
+            update(userRef, {
+                actReq: 'pending',
+                actData: {
+                    method: method,
+                    sender: sender,
+                    trx: trx,
+                    date: new Date().toLocaleString()
+                }
+            })
+            .then(() => {
+                showToast("Request Submitted!", "green");
+                // The onValue listener will automatically switch view to 'pending'
+            })
+            .catch((err) => {
+                showToast("Error: " + err.message, "red");
+            });
+        });
+
+        // --- UTILS ---
+        window.copyText = function(id) {
+            const text = document.getElementById(id).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast("Number Copied!", "#00c6ff");
+            });
+        };
+
+        window.showToast = function(msg, color="#333") {
+            const x = document.getElementById("toast");
+            x.innerText = msg;
+            x.style.backgroundColor = color;
+            x.className = "toast show";
+            setTimeout(() => { x.className = x.className.replace("toast show", "toast"); }, 3000);
+        };
+    </script>
+
+</body>
+</html>
