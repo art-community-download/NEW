@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Team | Part-Time Job</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        /* --- PREMIUM CSS --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; min-height: 100vh; background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); background-size: 400% 400%; animation: gradientBG 15s ease infinite; padding: 20px; color: white; }
+        @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        
+        .container { max-width: 500px; margin: 0 auto; padding-bottom: 50px; }
+
+        /* Header */
+        .header-top { display: flex; align-items: center; margin-bottom: 20px; }
+        .back-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 10px 14px; border-radius: 12px; cursor: pointer; margin-right: 15px; transition: 0.3s; }
+        .back-btn:hover { background: rgba(255,255,255,0.4); }
+        h2 { font-size: 22px; font-weight: 600; }
+
+        /* Referral Code Card */
+        .ref-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px; padding: 25px; text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); margin-bottom: 25px;
+            animation: slideDown 0.8s; position: relative; overflow: hidden;
+        }
+        .ref-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: rgba(255,255,255,0.1); transform: rotate(45deg); animation: shine 3s infinite;
+        }
+        @keyframes shine { 0% { left: -50%; } 100% { left: 150%; } }
+        
+        .ref-card h3 { font-size: 14px; opacity: 0.9; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .code-box {
+            background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 50px;
+            display: inline-flex; align-items: center; gap: 10px; font-size: 20px; font-weight: bold; cursor: pointer;
+        }
+        .code-box:active { transform: scale(0.95); }
+
+        /* Stats Row */
+        .stats-row { display: flex; gap: 15px; margin-bottom: 25px; }
+        .stat-box {
+            flex: 1; background: rgba(255,255,255,0.15); backdrop-filter: blur(5px);
+            padding: 15px; border-radius: 15px; text-align: center; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .stat-num { font-size: 24px; font-weight: bold; color: #ffd700; }
+        .stat-label { font-size: 12px; opacity: 0.8; }
+
+        /* Tabs */
+        .tab-menu { display: flex; margin-bottom: 20px; background: rgba(0,0,0,0.2); border-radius: 30px; padding: 5px; }
+        .tab-btn {
+            flex: 1; padding: 10px; border: none; background: transparent; color: white;
+            border-radius: 25px; cursor: pointer; font-weight: 600; transition: 0.3s;
+        }
+        .tab-active { background: white; color: #333; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* Member List */
+        .member-list { display: none; }
+        .list-active { display: block; animation: fadeIn 0.5s; }
+
+        .member-card {
+            background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px;
+            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+            border-left: 4px solid #ccc; transition: 0.3s;
+        }
+        .member-card:hover { transform: translateX(5px); background: rgba(255,255,255,0.15); }
+        
+        /* Status Colors */
+        .border-active { border-left-color: #00b09b; }
+        .border-pending { border-left-color: #ff416c; }
+
+        .m-info h4 { font-size: 16px; margin-bottom: 3px; }
+        .m-info p { font-size: 12px; opacity: 0.7; }
+        .m-status { font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 10px; }
+        .st-active { color: #00b09b; background: rgba(0, 176, 155, 0.1); }
+        .st-pending { color: #ff416c; background: rgba(255, 65, 108, 0.1); }
+
+        /* Animations */
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Toast */
+        .toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 5px; padding: 16px; position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%); }
+        .toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Header -->
+        <div class="header-top">
+            <button class="back-btn" onclick="window.location.href='home.html'"><i class="fas fa-arrow-left"></i></button>
+            <h2>My Team</h2>
+        </div>
+
+        <!-- Referral Code -->
+        <div class="ref-card">
+            <h3>Your Referral Code</h3>
+            <div class="code-box" onclick="copyCode()">
+                <span id="myRefCode">Loading...</span>
+                <i class="fas fa-copy"></i>
+            </div>
+            <p style="font-size:10px; margin-top:10px; opacity:0.7;">Tap to copy & share</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-num" id="totalTeam">0</div>
+                <div class="stat-label">Total Team</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-num" id="activeTeam" style="color:#00b09b">0</div>
+                <div class="stat-label">Active Users</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tab-menu">
+            <button class="tab-btn tab-active" onclick="switchTab('lvl1')">Level 1 (Direct)</button>
+            <button class="tab-btn" onclick="switchTab('lvl2')">Level 2 (Indirect)</button>
+        </div>
+
+        <!-- Lists -->
+        <div id="list-lvl1" class="member-list list-active">
+            <p style="text-align:center; margin-top:20px; opacity:0.6;">Loading...</p>
+        </div>
+
+        <div id="list-lvl2" class="member-list">
+            <p style="text-align:center; margin-top:20px; opacity:0.6;">Loading...</p>
+        </div>
+
+    </div>
+
+    <div id="toast" class="toast">Code Copied!</div>
+
+    <!-- Firebase Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDWu8H9uOVkHRXMbR4FFrzedZOh2wBkdJ0",
+            authDomain: "art2-245f8.firebaseapp.com",
+            databaseURL: "https://art2-245f8-default-rtdb.firebaseio.com",
+            projectId: "art2-245f8",
+            storageBucket: "art2-245f8.firebasestorage.app",
+            messagingSenderId: "963842145655",
+            appId: "1:963842145655:web:e7843407bec8528c67b572"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const uid = localStorage.getItem('currentUid');
+
+        if(!uid) window.location.href = 'login_register.html';
+
+        document.getElementById('myRefCode').innerText = uid;
+
+        // --- FETCH & CALCULATE TEAM ---
+        const usersRef = ref(db, 'users');
+
+        onValue(usersRef, (snapshot) => {
+            const users = snapshot.val();
+            if(!users) return;
+
+            const myUid = uid;
+            let level1 = []; // Direct
+            let level2 = []; // Indirect (Referred by Level 1)
+            let activeCount = 0;
+
+            // 1. Find Level 1 (Direct Referrals)
+            Object.values(users).forEach(user => {
+                if(user.referredBy === myUid) {
+                    level1.push(user);
+                    if(user.isActive) activeCount++;
+                }
+            });
+
+            // 2. Find Level 2 (Indirect Referrals)
+            // লেভেল ১ এর ইউজারদের UID গুলো একটি লিস্টে নিই
+            const l1_IDs = level1.map(u => u.uid);
+            
+            Object.values(users).forEach(user => {
+                // যদি এই ইউজারের রেফারার (referredBy) আমার লেভেল ১ লিস্টে থাকে
+                if(l1_IDs.includes(user.referredBy)) {
+                    level2.push(user);
+                    if(user.isActive) activeCount++;
+                }
+            });
+
+            // Update Stats
+            document.getElementById('totalTeam').innerText = level1.length + level2.length;
+            document.getElementById('activeTeam').innerText = activeCount;
+
+            // Render Lists
+            renderList('list-lvl1', level1);
+            renderList('list-lvl2', level2);
+        });
+
+        // --- RENDER FUNCTION ---
+        function renderList(elementId, data) {
+            const el = document.getElementById(elementId);
+            el.innerHTML = "";
+
+            if(data.length === 0) {
+                el.innerHTML = `<div style="text-align:center; margin-top:30px; opacity:0.5;">
+                    <i class="fas fa-users-slash" style="font-size:40px; margin-bottom:10px;"></i>
+                    <p>No members found</p>
+                </div>`;
+                return;
+            }
+
+            data.forEach(m => {
+                const statusClass = m.isActive ? 'st-active' : 'st-pending';
+                const borderClass = m.isActive ? 'border-active' : 'border-pending';
+                const statusText = m.isActive ? 'Active' : 'Pending';
+
+                el.innerHTML += `
+                    <div class="member-card ${borderClass}">
+                        <div class="m-info">
+                            <h4>${m.fname} ${m.lname}</h4>
+                            <p>UID: ${m.uid}</p>
+                            <p>Joined: ${m.joinDate || 'N/A'}</p>
+                        </div>
+                        <div class="m-status ${statusClass}">${statusText}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // --- UI FUNCTIONS ---
+        window.switchTab = function(tab) {
+            // Buttons style
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(b => b.classList.remove('tab-active'));
+            event.target.classList.add('tab-active');
+
+            // Lists display
+            document.getElementById('list-lvl1').classList.remove('list-active');
+            document.getElementById('list-lvl2').classList.remove('list-active');
+            
+            document.getElementById('list-' + tab).classList.add('list-active');
+        };
+
+        window.copyCode = function() {
+            const code = document.getElementById('myRefCode').innerText;
+            navigator.clipboard.writeText(code).then(() => {
+                const toast = document.getElementById("toast");
+                toast.className = "toast show";
+                setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+            });
+        };
+    </script>
+
+</body>
+</html>
